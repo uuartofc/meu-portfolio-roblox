@@ -75,7 +75,9 @@
                         <img src="images/admin-panel.png" alt="Sistema de Painel de Administrador">
                         <h2>Sistema de Painel de Administrador</h2>
                         <p>
-                            Um sistema de painel de administrador completo e modular para jogos Roblox. Ele oferece controle total sobre as funções do jogo, como gerenciamento de jogadores, itens e eventos, garantindo uma moderação eficiente e otimizada.
+                            Um sistema de painel de administrador completo e modular para jogos Roblox. Ele oferece
+                            controle total sobre as funções do jogo, como gerenciamento de jogadores, itens e eventos,
+                            garantindo uma moderação eficiente e otimizada.
                         </p>
                         <div class="card-tags">
                             <span>Lua</span>
@@ -104,12 +106,12 @@
                             <img src="" alt="">
                         </div>
                         <div class="project-screenshots">
-                            </div>
+                        </div>
                         <div class="project-videos">
-                            </div>
+                        </div>
                     </div>
                     <div class="project-downloads">
-                        </div>
+                    </div>
                     <div class="project-code">
                         <h3>Code Snippet</h3>
                         <pre><code></code></pre>
@@ -139,19 +141,21 @@
                         </div>
                     </div>
                     <div class="contact-form">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" placeholder="Your name">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="Your email">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" placeholder="Your message"></textarea>
-                        </div>
-                        <button class="submit-btn">Send Message</button>
+                        <form action="https://formspree.io/f/mqayeznj" method="POST">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="Your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" placeholder="Your message" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -164,7 +168,7 @@
 
     <div class="video-overlay">
         <div class="video-container">
-            </div>
+        </div>
     </div>
 
     <script src="js/projects.js"></script>
