@@ -30,7 +30,7 @@ const projects = [
         
         video:
          {
-            url: "https://www.youtube.com/embed/nPotQAV0mMU", // Cole a URL de incorporação (embed) do YouTube aqui
+            url: "videos/RobloxVideoDemonstrativo.mp4", // Cole a URL de incorporação (embed) do YouTube aqui
             title: "Música Favorita (Exemplo)" // Título do vídeo
         },
         
