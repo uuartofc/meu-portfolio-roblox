@@ -1,24 +1,34 @@
-// Funcionalidades principais do site
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Navegação entre páginas
     const navLinks = document.querySelectorAll('.nav-links li');
     const pages = document.querySelectorAll('.page');
-    
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    // Lógica para alternar a barra lateral
+    menuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
+    });
+
+    // Navegação entre páginas
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             const targetPage = this.getAttribute('data-page');
-            
-            // Remover classe ativa de todos os links e páginas
+
+            // Remove a classe 'active' de todos os links e páginas
             navLinks.forEach(item => item.classList.remove('active'));
             pages.forEach(page => page.classList.remove('active'));
-            
-            // Adicionar classe ativa ao link e página selecionados
+
+            // Adiciona a classe 'active' ao link e à página selecionados
             this.classList.add('active');
             document.getElementById(targetPage).classList.add('active');
+
+            // Fecha a barra lateral em telas pequenas após a seleção
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
         });
     });
-    
+
     // Botão de voltar na página de detalhes do projeto
     const backButton = document.querySelector('.back-button');
     if (backButton) {
@@ -28,30 +38,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Carregar projetos dinamicamente
-    loadProjects();
-    
-    // Evento para fechar o overlay de imagens ao clicar nele
+    // Lógica para abrir/fechar o overlay de imagens
     const imageOverlay = document.querySelector('.image-overlay');
     imageOverlay.addEventListener('click', function() {
         this.classList.remove('active');
     });
 
-    // Evento para fechar o overlay de vídeos ao clicar nele
+    // Lógica para abrir/fechar o overlay de vídeos
     const videoOverlay = document.querySelector('.video-overlay');
     videoOverlay.addEventListener('click', function() {
         this.classList.remove('active');
-        // Pausar o vídeo quando o overlay for fechado para evitar que continue tocando
         const iframeContainer = this.querySelector('.video-container');
-        iframeContainer.innerHTML = ''; // Remove o iframe do DOM
+        iframeContainer.innerHTML = '';
     });
 
-    // --- Lógica do formulário de contato ---
+    // Lógica do formulário de contato
     const form = document.querySelector('.contact-form form');
-    const formURL = "https://formspree.io/f/mqayeznj"; // O URL do seu formulário
+    const formURL = "https://formspree.io/f/mqayeznj";
 
     form.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Impede o envio padrão do formulário
+        event.preventDefault();
 
         const formData = new FormData(form);
         const response = await fetch(formURL, {
@@ -63,32 +69,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (response.ok) {
-            // Se o envio foi um sucesso, mostra o popup
             alert('Mensagem enviada com sucesso! Obrigado pelo contato.');
-            form.reset(); // Limpa os campos do formulário
+            form.reset();
         } else {
-            // Se houver um erro, avisa o usuário
             alert('Ops! Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.');
         }
     });
-    // --- Fim da lógica do formulário ---
+
+    // Carregar projetos dinamicamente
+    loadProjects();
 });
 
-// Função para carregar os projetos na página
+// ... (as funções loadProjects e showProjectDetails que você já tem) ...
 function loadProjects() {
     const projectsGrid = document.querySelector('.projects-grid');
-    
+
     if (projectsGrid) {
-        // Limpar o grid de projetos
         projectsGrid.innerHTML = '';
-        
-        // Para cada projeto no arquivo projects.js
+
         projects.forEach(project => {
-            // Criar card do projeto
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
-            
-            // Adicionar conteúdo do card
             projectCard.innerHTML = `
                 <div class="project-image">
                     <img src="${project.image}" alt="${project.title}">
@@ -101,26 +102,20 @@ function loadProjects() {
                     </div>
                 </div>
             `;
-            
-            // Adicionar evento de clique para abrir detalhes do projeto
             projectCard.addEventListener('click', function() {
                 showProjectDetails(project);
             });
-            
-            // Adicionar card ao grid
             projectsGrid.appendChild(projectCard);
         });
     }
 }
 
-// Função para mostrar detalhes do projeto
 function showProjectDetails(project) {
     const projectContent = document.querySelector('.project-content');
     const projectDetailsPage = document.getElementById('project-details');
     const projectsPage = document.getElementById('projects');
 
     if (projectContent && projectDetailsPage && projectsPage) {
-        // Preencher o conteúdo do projeto
         projectContent.innerHTML = `
             <div class="project-header">
                 <h1>${project.title}</h1>
@@ -129,11 +124,10 @@ function showProjectDetails(project) {
                     <span><i class="fas fa-code-branch"></i> ${project.version}</span>
                 </div>
             </div>
-            
             <div class="project-description">
                 ${project.fullDescription}
             </div>
-
+            
             <div class="project-media">
                 <h3>Miniaturas</h3>
                 <div class="project-screenshots">
@@ -183,8 +177,7 @@ function showProjectDetails(project) {
                 </div>
             ` : ''}
         `;
-        
-        // Adicionar o evento de clique nas miniaturas para abrir o pop-up de imagem
+
         const projectScreenshots = document.querySelector('.project-screenshots');
         const imageOverlay = document.querySelector('.image-overlay');
         const overlayImage = imageOverlay.querySelector('img');
@@ -196,29 +189,25 @@ function showProjectDetails(project) {
             }
         });
 
-        // Adicionar o evento de clique no botão de vídeo
         const videoButton = document.querySelector('.video-button');
         if (videoButton) {
             videoButton.addEventListener('click', function() {
                 const videoOverlay = document.querySelector('.video-overlay');
                 const iframeContainer = videoOverlay.querySelector('.video-container');
                 const videoUrl = this.getAttribute('data-video-url');
-                
-                // Cria o iframe dinamicamente
+
                 const iframe = document.createElement('iframe');
                 iframe.src = videoUrl;
                 iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
                 iframe.setAttribute('allowfullscreen', '');
-                
-                // Limpa o container e insere o novo iframe
+
                 iframeContainer.innerHTML = '';
                 iframeContainer.appendChild(iframe);
-                
+
                 videoOverlay.classList.add('active');
             });
         }
 
-        // Mostrar página de detalhes e esconder página de projetos
         projectsPage.classList.remove('active');
         projectDetailsPage.classList.add('active');
     }
