@@ -81,12 +81,12 @@ body {
 }
 
 .nav-links li:hover {
-    background-color: rgba(0, 162, 255, 0.1);
+    background-color: rgba(255, 0, 0, 0.1);
     border-left: 4px solid var(--primary-color);
 }
 
 .nav-links li.active {
-    background-color: rgba(0, 162, 255, 0.2);
+    background-color: rgba(255, 0, 0, 0.2);
     border-left: 4px solid var(--primary-color);
     font-weight: bold;
 }
@@ -288,7 +288,7 @@ body {
 }
 
 .back-button:hover {
-    background-color: #0080cc;
+    background-color: #cc0000;
 }
 
 .project-content {
@@ -449,7 +449,7 @@ body {
 }
 
 .submit-btn:hover {
-    background-color: #0080cc;
+    background-color: #cc0000;
 }
 
 /* Responsividade */
@@ -526,7 +526,7 @@ body {
     padding: 10px 15px;
     color: var(--text-color);
     font-weight: bold;
-    background-color: rgba(0, 162, 255, 0.1);
+    background-color: rgba(255, 0, 0, 0.1);
     border-top: 1px solid var(--video-border-color);
 }
 
@@ -727,7 +727,7 @@ img {
 }
 
 .video-button:hover {
-    background-color: #0080cc;
+    background-color: #cc0000;
     border-color: white;
 }
 

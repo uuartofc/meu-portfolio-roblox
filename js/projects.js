@@ -1,7 +1,6 @@
 // Dados dos projetos de scripts Roblox
 
 const projects = [
-    // Adicionando projetos de scripts Roblox
     {
         id: 1,
         title: "Sistema de Painel de Administrador",
@@ -22,22 +21,11 @@ const projects = [
         image: "images/AdmPainel.png",
         screenshots: ["images/AdmPainel.png", "images/screenshot1.png", "images/screenshot2.png", "images/screenshot3.png"],
         
-        // --- CONTROLE DE VÍDEO ---
-
-        //video: null,
-        
-        // Se você tiver um vídeo, preencha o objeto abaixo:
-        
-        video:
-         {
-            url: "videos/RobloxVideoDemonstrativo.mp4", // Cole a URL de incorporação (embed) do YouTube aqui
-            title: "Música Favorita (Exemplo)" // Título do vídeo
+        video: {
+            url: "https://youtube.com/embed/CraHn5e2boI", 
+            title: "Pequena Demonstração do Painel de Administrador"
         },
         
-        // Se NÃO tiver um vídeo (ou quiser removê-lo), defina 'video' como 'null':
-        // video: null, 
-        // -------------------------
-
         downloadFiles: [
             {
                 name: "Indisponível",
