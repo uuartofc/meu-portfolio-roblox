@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.art - Portfólio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="Logo">
+                <h2>Artur</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-page="home"><i class="fas fa-user"></i> About</li>
+                <li data-page="projects"><i class="fas fa-code"></i> Systems</li>
+                <li data-page="contact"><i class="fas fa-envelope"></i> Contact</li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section id="home" class="page active">
+                <div class="about-container">
+                    <div class="profile">
+                        <div class="profile-image">
+                            <img src="images/profile.jpeg" alt="Foto de Perfil">
+                        </div>
+                        <h1>U.art</h1>
+                        <p class="title">System Developer</p>
+                    </div>
+                    <div class="about-text">
+                        <h2>About U.art</h2>
+                        <p>
+                            Olá! Meu nome é Artur, um desenvolvedor de sistemas para o Roblox. Tenho experiência com
+                            <strong>Lua</strong> e <strong>Roblox Studio</strong>, e me especializo na criação de
+                            experiências de jogo otimizadas e com <strong>interfaces de usuário</strong> intuitivas.
+                            Minhas habilidades incluem <strong>scripting em Lua</strong> e design de UI no Roblox, além
+                            de <strong>design de imagens</strong>. Fora do universo de games, atuo com
+                            <strong>desenvolvimento web</strong>, dominando <strong>HTML</strong>, <strong>CSS</strong>,
+                            e com conhecimento de <strong>JavaScript</strong>. Também possuo familiaridade com
+                            <strong>Python</strong> e <strong>C++</strong>, o que amplia minha capacidade de construir
+                            sistemas e
+                            ferramentas robustas.
+                        </p>
+
+                        <div class="skills">
+                            <h3>Skills</h3>
+                            <div class="skill-tags">
+                                <span>Lua</span>
+                                <span>Roblox Studio</span>
+                                <span>UI Design</span>
+                                <span>Design de Imagens</span>
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Python</span>
+                                <span>C++</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="page">
+                <h1>Systems</h1>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <img src="images/admin-panel.png" alt="Sistema de Painel de Administrador">
+                        <h2>Sistema de Painel de Administrador</h2>
+                        <p>
+                            Um sistema de painel de administrador completo e modular para jogos Roblox. Ele oferece controle total sobre as funções do jogo, como gerenciamento de jogadores, itens e eventos, garantindo uma moderação eficiente e otimizada.
+                        </p>
+                        <div class="card-tags">
+                            <span>Lua</span>
+                            <span>UI/UX</span>
+                            <span>Sistema</span>
+                            <span>Admin Panel</span>
+                            <span>Datastore</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="project-details" class="page">
+                <div class="back-button"><i class="fas fa-arrow-left"></i> Back to Systems</div>
+                <div class="project-content">
+                    <div class="project-info">
+                        <h2></h2>
+                        <p></p>
+                        <div class="project-meta">
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="project-media">
+                        <div class="main-image">
+                            <img src="" alt="">
+                        </div>
+                        <div class="project-screenshots">
+                            </div>
+                        <div class="project-videos">
+                            </div>
+                    </div>
+                    <div class="project-downloads">
+                        </div>
+                    <div class="project-code">
+                        <h3>Code Snippet</h3>
+                        <pre><code></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="page">
+                <h1>Contact</h1>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <p><a href="mailto:arturxprime2@gmail.com">Email</a></p>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-discord"></i>
+                            <p><a href="https://discord.com/users/arturxprime" target="_blank">Discord</a></p>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <p><a href="https://github.com/uuartofc" target="_blank">Github</a></p>
+                        </div>
+                        <div class="contact-item">
+                            <img src="images/logo.png" alt="Roblox Logo" class="contact-icon">
+                            <p><a href="https://www.roblox.com/users/720957944/profile" target="_blank">Roblox</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" placeholder="Your message"></textarea>
+                        </div>
+                        <button class="submit-btn">Send Message</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="image-overlay">
+        <img src="" alt="Imagem em tamanho real">
+    </div>
+
+    <div class="video-overlay">
+        <div class="video-container">
+            </div>
+    </div>
+
+    <script src="js/projects.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
