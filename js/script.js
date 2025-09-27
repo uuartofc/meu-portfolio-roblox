@@ -42,14 +42,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Lógica do formulário de contato ---
-    const form = document.querySelector('.contact-form form');
-    const formURL = "https://formspree.io/f/mqayeznj";
-    if (form) {
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
+// --- Lógica do formulário de contato ---
+const form = document.querySelector('.contact-form form');
+const formURL = "https://formspree.io/f/mqayeznj"; // O URL do seu formulário
 
-            const formData = new FormData(form);
+if (form) {
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        const formData = new FormData(form);
+        
+        try {
             const response = await fetch(formURL, {
                 method: 'POST',
                 body: formData,
@@ -58,14 +61,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
+            // Adicionado para diagnóstico: registra a resposta completa no console
+            console.log("Resposta do Formspree:", response);
+
             if (response.ok) {
+                // Se o envio foi um sucesso, mostra o popup
                 alert('Mensagem enviada com sucesso! Obrigado pelo contato.');
-                form.reset();
+                form.reset(); // Limpa os campos do formulário
             } else {
+                // Se houver um erro, avisa o usuário
                 alert('Ops! Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.');
             }
-        });
-    }
+        } catch (error) {
+            // Adicionado para diagnóstico: captura erros de rede
+            console.error('Erro de requisição:', error);
+            alert('Ops! Ocorreu um erro de conexão. Verifique seu console.');
+        }
+    });
+}
+// --- Fim da lógica do formulário ---
 
     // --- Overlay de Vídeo ---
     const videoOverlay = document.querySelector('.video-overlay');
@@ -100,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectEditorForm = document.getElementById('projectEditorForm');
     const projectIdInput = document.getElementById('projectId');
     const projectTittleInput = document.getElementById('projectTitle');
-    const projectShortDescInput = document = document.getElementById('projectShortDesc');
+    const projectShortDescInput = document.getElementById('projectShortDesc');
     const projectFullDescInput = document.getElementById('projectFullDesc');
     const projectImageInput = document.getElementById('projectImage');
     const projectScreenshotsInput = document.getElementById('projectScreenshots');
