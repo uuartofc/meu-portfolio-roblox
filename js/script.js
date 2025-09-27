@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // --- Lógica do formulário de contato ---
 const form = document.querySelector('.contact-form form');
-const formURL = "https://formspree.io/f/mqayeznj"; // O URL do seu formulário
+const formURL = "https://formspree.io/f/movkjepb"; // O URL do seu formulário
 
 if (form) {
     form.addEventListener('submit', async function(event) {
