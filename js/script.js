@@ -16,12 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Adicionar classe ativa ao link e página selecionados
             this.classList.add('active');
             document.getElementById(targetPage).classList.add('active');
-            
-            // Se a página for "Projetos" ou "Admin", carregar os dados
+
             if (targetPage === 'projects') {
                 loadProjects();
-            } else if (targetPage === 'admin') {
-                // A lógica de login e carregamento do admin está em admin.js
             }
         });
     });
@@ -35,10 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Carregar projetos dinamicamente na primeira vez que a página é carregada
-    if (document.getElementById('projects').classList.contains('active')) {
-        loadProjects();
-    }
+    // Carregar projetos dinamicamente
+    loadProjects();
     
     // Evento para fechar o overlay de imagens ao clicar nele
     const imageOverlay = document.querySelector('.image-overlay');
@@ -52,12 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verifica se o clique foi diretamente no overlay e não no iframe
         if (e.target === this) {
             this.classList.remove('active');
-            // Pausar o vídeo quando o overlay for fechado para evitar que continue tocando
-            const iframeContainer = this.querySelector('.video-container');
-            iframeContainer.innerHTML = ''; // Remove o iframe do DOM
+            // Interrompe o vídeo quando o overlay é fechado
+            const iframe = this.querySelector('iframe');
+            if (iframe) {
+                iframe.src = '';
+            }
         }
     });
-
+    
     // --- Lógica do formulário de contato (mantida) ---
     const form = document.querySelector('.contact-form form');
     const formURL = "https://formspree.io/f/mqayeznj"; // O URL do seu formulário
@@ -91,8 +88,7 @@ async function loadProjects() {
         projectsGrid.innerHTML = '<p>Carregando projetos...</p>';
         
         try {
-            const projectsRef = db.collection('projects');
-            const snapshot = await projectsRef.get();
+            const snapshot = await db.collection('projects').get();
             const projects = [];
             snapshot.forEach(doc => {
                 projects.push({

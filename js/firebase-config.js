@@ -1,7 +1,3 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
 // Substitua estes valores com a sua configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAzLX4Bo53ARb_lXr-a6jXifYHzaK5lBm0",
