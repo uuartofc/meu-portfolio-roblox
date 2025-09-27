@@ -39,7 +39,6 @@ body {
     position: fixed;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 100;
-    transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .logo {
@@ -54,14 +53,12 @@ body {
     width: 80px;
     height: 80px;
     margin-bottom: 10px;
-    border-radius: 50%;
 }
 
 .logo h2 {
     font-size: 1.5rem;
     color: var(--primary-color);
     text-align: center;
-    transition: opacity 0.3s ease-in-out;
 }
 
 .nav-links {
@@ -83,11 +80,6 @@ body {
     font-size: 1.2rem;
 }
 
-.nav-links li span {
-    transition: opacity 0.3s ease-in-out;
-    opacity: 1;
-}
-
 .nav-links li:hover {
     background-color: rgba(255, 0, 0, 0.1);
     border-left: 4px solid var(--primary-color);
@@ -105,74 +97,9 @@ body {
     margin-left: 250px;
     padding: 30px;
     position: relative;
-    transition: margin-left 0.3s ease-in-out;
 }
 
-/* Estilos para o botão de menu, visível apenas em telas pequenas */
-.menu-toggle {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    cursor: pointer;
-    z-index: 101;
-}
-
-/* Quando a barra lateral está ativa, altera o estilo do botão */
-.sidebar.active + .menu-toggle i::before {
-    content: "\f00d";
-}
-
-/* Media Queries para responsividade */
-@media (max-width: 992px) {
-    .sidebar {
-        width: 80px;
-    }
-    .logo h2,
-    .nav-links li span {
-        display: none;
-    }
-    .nav-links li {
-        justify-content: center;
-        padding: 15px 0;
-    }
-    .nav-links li i {
-        margin-right: 0;
-        font-size: 1.5rem;
-    }
-    .content {
-        margin-left: 80px;
-    }
-    .contact-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-250px);
-        width: 250px;
-    }
-    .menu-toggle {
-        display: block;
-    }
-    .sidebar.active {
-        transform: translateX(0);
-    }
-    .content {
-        margin-left: 0;
-    }
-    .about-container {
-        flex-direction: column;
-    }
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* O restante do seu CSS que lida com imagens, vídeos, etc. */
+/* Páginas */
 .page {
     display: none;
     animation: fadeIn 0.5s ease;
@@ -183,16 +110,11 @@ body {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
+/* Página Sobre Mim */
 .about-container {
     display: flex;
     flex-direction: column;
@@ -280,6 +202,7 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Página de Projetos */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -352,6 +275,7 @@ body {
     font-size: 0.8rem;
 }
 
+/* Página de Detalhes do Projeto */
 .back-button {
     display: inline-block;
     padding: 10px 15px;
@@ -439,6 +363,7 @@ body {
     line-height: 1.5;
 }
 
+/* Página de Contato */
 .contact-container {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -527,12 +452,51 @@ body {
     background-color: #cc0000;
 }
 
-.contact-item .contact-icon {
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
+/* Responsividade */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 80px;
+        padding: 15px 0;
+    }
+    
+    .logo h2 {
+        display: none;
+    }
+    
+    .nav-links li {
+        padding: 15px 0;
+        justify-content: center;
+    }
+    
+    .nav-links li i {
+        margin-right: 0;
+        font-size: 1.5rem;
+    }
+    
+    .nav-links li span {
+        display: none;
+    }
+    
+    .content {
+        margin-left: 80px;
+    }
+    
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
 }
 
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para vídeos */
 .project-videos {
     margin-bottom: 30px;
 }
@@ -566,6 +530,7 @@ body {
     border-top: 1px solid var(--video-border-color);
 }
 
+/* Estilos para a seção de downloads */
 .download-section {
     margin: 30px 0;
 }
@@ -611,54 +576,84 @@ body {
     font-size: 0.8rem;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-.sidebar .logo img {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 10px auto;
-    border-radius: 50%;
-}
-
-.profile-image img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid var(--accent-color);
-    margin: 0 auto 20px auto;
+@media (max-width: 576px) {
+    .content {
+        padding: 20px 15px;
+    }
+    
+    .video-container iframe {
+        aspect-ratio: 16/9;
+    }
 }
 
 .contact-item .contact-icon {
-    margin-right: 15px;
-    max-width: 32px;
+    width: 35px; /* Ajuste este valor para o tamanho que você desejar */
+    height: 35px;
+    margin-right: 10px; /* Adiciona um espaço à direita do ícone */
 }
 
+/* --- Estilos Gerais de Imagem --- */
+img {
+    max-width: 100%; /* Garante que nenhuma imagem ultrapasse o contêiner pai */
+    height: auto;    /* Mantém a proporção de todas as imagens */
+    display: block;  /* Para permitir a centralização com margin auto */
+}
+
+/* --- Estilos para a Logo do Sidebar --- */
+.sidebar .logo img {
+    width: 60px; /* Tamanho específico para a logo do sidebar */
+    height: 60px;
+    margin: 0 auto 10px auto; /* Centraliza a logo no topo do sidebar */
+    border-radius: 50%; /* Se for uma logo redonda */
+}
+
+/* --- Estilos para a Imagem de Perfil na Seção "About" --- */
+.profile-image img {
+    width: 150px; /* Tamanho específico para a imagem de perfil */
+    height: 150px;
+    object-fit: cover; /* Recorta a imagem para preencher o espaço, mantendo a proporção */
+    border-radius: 50%; /* Para imagem de perfil redonda */
+    border: 3px solid var(--accent-color); /* Borda decorativa */
+    margin: 0 auto 20px auto; /* Centraliza e adiciona espaço */
+}
+
+/* --- Estilos para o Ícone Roblox na Seção "Contact" --- */
+.contact-item .contact-icon {
+    /* Não precisa mais de width/height fixos se a imagem for pequena o suficiente
+       e o max-width: 100% no img global já ajuda.
+       Se a imagem for grande, o max-width: 100% resolve.
+       Se ela for pequena e precisar CENTRALIZAR, o display: block e margin: 0 auto
+       do img global já faz o trabalho.
+       Removi o width: 24px; height: 24px; para que o tamanho original seja mantido para ícones pequenos. */
+    margin-right: 15px; /* Mantém o espaçamento com o texto */
+    /* Você pode adicionar um max-width aqui se quiser um limite para ele */
+    max-width: 32px; /* Exemplo: define um tamanho máximo para o ícone */
+}
+
+/* --- Estilos para a Seção de Detalhes do Projeto (project-details) --- */
 .project-media .main-image img {
-    max-width: 80%;
+    max-width: 80%; /* Ajusta a imagem principal na página de detalhes */
     height: auto;
     display: block;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px auto; /* Centraliza a imagem principal */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* --- Estilos para a Imagem Principal do Projeto (project-card na seção "Systems") --- */
 .project-card img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto 15px auto;
+    max-width: 100%;       /* Garante que a imagem não ultrapasse a largura do cartão */
+    height: auto;          /* Mantém a proporção original da imagem */
+    display: block;        /* Transforma a imagem em um bloco para centralizar */
+    margin: 0 auto 15px auto; /* Centraliza a imagem no cartão e adiciona espaço abaixo */
     border-radius: 10px;
-    object-fit: contain;
-    background-color: #2a2a2a;
-    padding: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    object-fit: contain;   /* Garante que a imagem inteira seja visível dentro do contêiner */
+    background-color: #2a2a2a; /* Cor de fundo caso a imagem não preencha o espaço (opcional) */
+    padding: 5px;          /* Pequeno padding para destacar (opcional) */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
 }
 
+/* --- Estilos para as miniaturas de screenshots na página de detalhes (mantidas) --- */
 .project-screenshots {
     display: flex;
     flex-wrap: wrap;
@@ -669,11 +664,11 @@ img {
 }
 
 .project-screenshots img {
-    max-width: 100%;
-    max-height: 120px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+    max-width: 100%;       /* Garante que a imagem não ultrapasse seu contêiner */
+    max-height: 120px;     /* Limita a altura máxima para miniaturas */
+    width: auto;           /* Permite que a largura se ajuste automaticamente */
+    height: auto;          /* Permite que a altura se ajuste automaticamente */
+    object-fit: contain;   /* Garante que a imagem inteira seja visível */
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -684,6 +679,7 @@ img {
     transform: scale(1.05);
 }
 
+/* --- Overlay para Visualização de Imagens em Tela Cheia --- */
 .image-overlay {
     position: fixed;
     top: 0;
@@ -691,15 +687,15 @@ img {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    display: none;
+    display: none; /* Escondido por padrão */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    cursor: pointer;
+    z-index: 1000; /* Garante que fique acima de outros elementos */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
 }
 
 .image-overlay.active {
-    display: flex;
+    display: flex; /* Exibe o overlay quando a classe 'active' é adicionada */
 }
 
 .image-overlay img {
@@ -710,6 +706,7 @@ img {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
+/* --- Novo Estilo para o Botão de Vídeo --- */
 .video-button-container {
     text-align: center;
     margin: 20px 0;
@@ -745,6 +742,7 @@ img {
     margin: 20px 0;
 }
 
+/* --- Overlay para Visualização de Vídeos em Tela Cheia --- */
 .video-overlay {
     position: fixed;
     top: 0;
@@ -752,36 +750,39 @@ img {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    display: none;
+    display: none; /* Escondido por padrão */
     justify-content: center;
     align-items: center;
-    z-index: 1001;
+    z-index: 1001; /* Z-index maior que o do overlay de imagens */
     cursor: pointer;
+    /* Adicionado para garantir que o overlay de vídeo cubra tudo */
     margin: 0;
     padding: 0;
 }
 
 .video-overlay.active {
-    display: flex;
+    display: flex; /* Exibe o overlay quando a classe 'active' é adicionada */
 }
 
+/* Contêiner que define a proporção 16:9 */
 .video-overlay .video-container {
     position: relative;
-    width: 100%;
-    max-width: 960px;
-    height: 0;
-    padding-bottom: 56.25%;
-    overflow: hidden;
-    background-color: black;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 100%; /* Largura máxima do vídeo dentro do overlay */
+    max-width: 960px; /* Limite de largura para o player de vídeo */
+    height: 0; /* Zerar altura para que padding-bottom defina */
+    padding-bottom: 40.25%; /* Isso cria uma altura igual a 56.25% da largura (16:9) */
+    overflow: hidden; /* Garante que nada escape */
+    background-color: black; /* Fundo preto para o player */
+    border-radius: 10px; /* Borda arredondada para o player */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra para destacar */
 }
 
+/* O iframe em si, preenchendo o contêiner 16:9 */
 .video-overlay iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border: none;
+    border: none; /* Remove a borda padrão do iframe */
 }
