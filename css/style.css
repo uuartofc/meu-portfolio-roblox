@@ -217,6 +217,9 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: auto;
 }
 
 .project-card:hover {
@@ -224,30 +227,36 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-.project-image {
+.project-card .project-image-container {
     height: 180px;
     overflow: hidden;
+    width: 100%;
 }
 
-.project-image img {
+.project-card .project-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
+    display: block;
 }
 
-.project-card:hover .project-image img {
+.project-card:hover .project-image-container img {
     transform: scale(1.05);
 }
 
 .project-info {
     padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-info h3 {
     color: var(--primary-color);
     margin-bottom: 10px;
     font-size: 1.4rem;
+    line-height: 1.3;
 }
 
 .project-info p {
@@ -259,12 +268,14 @@ body {
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex-grow: 1;
 }
 
 .project-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-top: auto;
 }
 
 .project-tags span {
@@ -302,41 +313,20 @@ body {
     margin-bottom: 30px;
 }
 
-.project-header h1 {
+.project-header h2 {
     color: var(--primary-color);
     margin-bottom: 10px;
     font-size: 2.2rem;
 }
 
-.project-header .project-meta {
-    display: flex;
-    gap: 15px;
+.project-header .project-date {
     color: #aaaaaa;
     margin-bottom: 20px;
-}
-
-.project-header .project-meta span {
-    display: flex;
-    align-items: center;
-}
-
-.project-header .project-meta i {
-    margin-right: 5px;
 }
 
 .project-description {
     margin-bottom: 30px;
     line-height: 1.7;
-}
-
-.project-images {
-    margin-bottom: 30px;
-}
-
-.project-images img {
-    width: 100%;
-    border-radius: var(--border-radius);
-    margin-bottom: 15px;
 }
 
 .code-section {
@@ -349,16 +339,11 @@ body {
     font-size: 1.4rem;
 }
 
-.code-block {
+.code-section pre {
     background-color: #1a1a1a;
     border-radius: var(--border-radius);
     padding: 20px;
     overflow-x: auto;
-    margin-bottom: 20px;
-}
-
-.code-block pre {
-    font-family: 'Courier New', Courier, monospace;
     color: #e0e0e0;
     line-height: 1.5;
 }
@@ -384,12 +369,16 @@ body {
     margin-bottom: 20px;
 }
 
-.contact-item i {
-    font-size: 1.5rem;
-    color: var(--primary-color);
+/* CORREÇÃO AQUI: Garante que os ícones de FontAwesome ou imagens se alinhem corretamente */
+.contact-item i,
+.contact-item img {
+    font-size: 1.5rem; /* Para ícones */
+    width: 30px; /* Largura fixa para alinhar */
+    height: 30px; /* Altura fixa para alinhar */
     margin-right: 15px;
-    width: 30px;
     text-align: center;
+    object-fit: contain; /* Ajusta a imagem sem distorcer */
+    color: var(--primary-color); /* Apenas para ícones de fonte */
 }
 
 .contact-item a {
@@ -496,43 +485,144 @@ body {
     }
 }
 
-/* Estilos para vídeos */
-.project-videos {
+/* --- Estilos para Seções Específicas de Imagem e Vídeo --- */
+.project-screenshots-section {
     margin-bottom: 30px;
 }
 
-.project-videos h3 {
+.project-screenshots-section h3 {
     color: var(--secondary-color);
     margin-bottom: 15px;
     font-size: 1.4rem;
 }
 
-.video-container {
-    margin-bottom: 20px;
-    background-color: var(--video-background);
+.screenshot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.screenshot-grid img {
+    max-width: 250px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.screenshot-grid img:hover {
+    transform: scale(1.05);
+}
+
+.video-button-container {
+    text-align: center;
+    margin: 20px 0 30px 0;
+}
+
+.video-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: var(--secondary-color);
+    color: white;
     border-radius: var(--border-radius);
-    overflow: hidden;
-    border: 2px solid var(--video-border-color);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.video-container iframe {
-    width: 100%;
-    aspect-ratio: 16/9;
-    display: block;
-}
-
-.video-title {
-    padding: 10px 15px;
-    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
     font-weight: bold;
-    background-color: rgba(255, 0, 0, 0.1);
-    border-top: 1px solid var(--video-border-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 2px solid transparent;
 }
 
-/* Estilos para a seção de downloads */
+.video-button:hover {
+    background-color: #cc0000;
+    border-color: white;
+}
+
+.video-button i {
+    margin-right: 8px;
+}
+
+.no-video-message {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    margin: 20px 0 30px 0;
+}
+
+/* --- Overlays de Imagem e Vídeo --- */
+.image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* O container principal do vídeo, que fica no centro da tela */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none; /* Inicia oculto */
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+/* O container interno que define a proporção de 16:9 */
+.video-overlay .video-container {
+    position: relative;
+    width: 90%;
+    max-width: 960px;
+    height: 0;
+    padding-bottom: 37.25%; /* Isso define a proporção de 16:9 */
+    overflow: hidden;
+    background-color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    cursor: default; /* Remove o cursor de "mão" sobre o vídeo */
+}
+
+/* O iframe que irá preencher todo o container de 16:9 */
+.video-overlay .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px;
+}
+
+/* --- Estilos da Seção de Downloads --- */
 .download-section {
     margin: 30px 0;
+}
+
+.download-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.4rem;
 }
 
 .download-files {
@@ -576,217 +666,6 @@ body {
     font-size: 0.8rem;
 }
 
-@media (max-width: 576px) {
-    .content {
-        padding: 20px 15px;
-    }
-    
-    .video-container iframe {
-        aspect-ratio: 16/9;
-    }
-}
-
-.contact-item .contact-icon {
-    width: 35px; /* Ajuste este valor para o tamanho que você desejar */
-    height: 35px;
-    margin-right: 10px; /* Adiciona um espaço à direita do ícone */
-}
-
-/* --- Estilos Gerais de Imagem --- */
-img {
-    max-width: 100%; /* Garante que nenhuma imagem ultrapasse o contêiner pai */
-    height: auto;    /* Mantém a proporção de todas as imagens */
-    display: block;  /* Para permitir a centralização com margin auto */
-}
-
-/* --- Estilos para a Logo do Sidebar --- */
-.sidebar .logo img {
-    width: 60px; /* Tamanho específico para a logo do sidebar */
-    height: 60px;
-    margin: 0 auto 10px auto; /* Centraliza a logo no topo do sidebar */
-    border-radius: 50%; /* Se for uma logo redonda */
-}
-
-/* --- Estilos para a Imagem de Perfil na Seção "About" --- */
-.profile-image img {
-    width: 150px; /* Tamanho específico para a imagem de perfil */
-    height: 150px;
-    object-fit: cover; /* Recorta a imagem para preencher o espaço, mantendo a proporção */
-    border-radius: 50%; /* Para imagem de perfil redonda */
-    border: 3px solid var(--accent-color); /* Borda decorativa */
-    margin: 0 auto 20px auto; /* Centraliza e adiciona espaço */
-}
-
-/* --- Estilos para o Ícone Roblox na Seção "Contact" --- */
-.contact-item .contact-icon {
-    /* Não precisa mais de width/height fixos se a imagem for pequena o suficiente
-       e o max-width: 100% no img global já ajuda.
-       Se a imagem for grande, o max-width: 100% resolve.
-       Se ela for pequena e precisar CENTRALIZAR, o display: block e margin: 0 auto
-       do img global já faz o trabalho.
-       Removi o width: 24px; height: 24px; para que o tamanho original seja mantido para ícones pequenos. */
-    margin-right: 15px; /* Mantém o espaçamento com o texto */
-    /* Você pode adicionar um max-width aqui se quiser um limite para ele */
-    max-width: 32px; /* Exemplo: define um tamanho máximo para o ícone */
-}
-
-/* --- Estilos para a Seção de Detalhes do Projeto (project-details) --- */
-.project-media .main-image img {
-    max-width: 80%; /* Ajusta a imagem principal na página de detalhes */
-    height: auto;
-    display: block;
-    margin: 0 auto 20px auto; /* Centraliza a imagem principal */
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* --- Estilos para a Imagem Principal do Projeto (project-card na seção "Systems") --- */
-.project-card img {
-    max-width: 100%;       /* Garante que a imagem não ultrapasse a largura do cartão */
-    height: auto;          /* Mantém a proporção original da imagem */
-    display: block;        /* Transforma a imagem em um bloco para centralizar */
-    margin: 0 auto 15px auto; /* Centraliza a imagem no cartão e adiciona espaço abaixo */
-    border-radius: 10px;
-    object-fit: contain;   /* Garante que a imagem inteira seja visível dentro do contêiner */
-    background-color: #2a2a2a; /* Cor de fundo caso a imagem não preencha o espaço (opcional) */
-    padding: 5px;          /* Pequeno padding para destacar (opcional) */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
-}
-
-/* --- Estilos para as miniaturas de screenshots na página de detalhes (mantidas) --- */
-.project-screenshots {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 20px 0;
-}
-
-.project-screenshots img {
-    max-width: 100%;       /* Garante que a imagem não ultrapasse seu contêiner */
-    max-height: 120px;     /* Limita a altura máxima para miniaturas */
-    width: auto;           /* Permite que a largura se ajuste automaticamente */
-    height: auto;          /* Permite que a altura se ajuste automaticamente */
-    object-fit: contain;   /* Garante que a imagem inteira seja visível */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-
-.project-screenshots img:hover {
-    transform: scale(1.05);
-}
-
-/* --- Overlay para Visualização de Imagens em Tela Cheia --- */
-.image-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: none; /* Escondido por padrão */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Garante que fique acima de outros elementos */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-.image-overlay.active {
-    display: flex; /* Exibe o overlay quando a classe 'active' é adicionada */
-}
-
-.image-overlay img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-/* --- Novo Estilo para o Botão de Vídeo --- */
-.video-button-container {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.video-button {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: var(--secondary-color);
-    color: white;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.video-button:hover {
-    background-color: #cc0000;
-    border-color: white;
-}
-
-.video-button i {
-    margin-right: 8px;
-}
-
-.no-video-message {
-    text-align: center;
-    color: #999;
-    font-style: italic;
-    margin: 20px 0;
-}
-
-/* --- Overlay para Visualização de Vídeos em Tela Cheia --- */
-.video-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: none; /* Escondido por padrão */
-    justify-content: center;
-    align-items: center;
-    z-index: 1001; /* Z-index maior que o do overlay de imagens */
-    cursor: pointer;
-    /* Adicionado para garantir que o overlay de vídeo cubra tudo */
-    margin: 0;
-    padding: 0;
-}
-
-.video-overlay.active {
-    display: flex; /* Exibe o overlay quando a classe 'active' é adicionada */
-}
-
-/* Contêiner que define a proporção 16:9 */
-.video-overlay .video-container {
-    position: relative;
-    width: 100%; /* Largura máxima do vídeo dentro do overlay */
-    max-width: 960px; /* Limite de largura para o player de vídeo */
-    height: 0; /* Zerar altura para que padding-bottom defina */
-    padding-bottom: 40.25%; /* Isso cria uma altura igual a 56.25% da largura (16:9) */
-    overflow: hidden; /* Garante que nada escape */
-    background-color: black; /* Fundo preto para o player */
-    border-radius: 10px; /* Borda arredondada para o player */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra para destacar */
-}
-
-/* O iframe em si, preenchendo o contêiner 16:9 */
-.video-overlay iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none; /* Remove a borda padrão do iframe */
-}
-
 /* --- Estilos do Painel de Administração --- */
 .admin-container {
     padding: 20px;
@@ -795,6 +674,7 @@ img {
 
 .admin-login-card {
     background-color: var(--card-color);
+    border: 1px solid var(--secondary-color);
     padding: 30px;
     border-radius: var(--border-radius);
     max-width: 400px;
@@ -836,13 +716,11 @@ img {
 }
 
 .admin-content {
-    margin-top: 20px;
-}
-
-.admin-content h2 {
-    color: var(--text-color);
-    margin-bottom: 20px;
-    text-align: center;
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-top: 30px;
 }
 
 #addProjectBtn {
@@ -864,35 +742,63 @@ img {
 }
 
 .project-list {
-    margin-top: 30px;
-    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     padding: 20px;
+    background-color: #1a1a1a;
     border-radius: var(--border-radius);
 }
 
-.admin-project-item {
+.project-item {
     background-color: #2b2b2b;
-    color: var(--text-color);
     padding: 15px;
-    margin-bottom: 10px;
     border-radius: var(--border-radius);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.admin-actions button {
+.project-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.project-item h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.project-item p {
+    margin: 0;
+    color: #999;
+}
+
+.edit-btn, .delete-btn {
+    /* Propriedades para ambos os botões */
+    width: 80px; /* Largura fixa */
+    height: 35px; /* Altura fixa */
     padding: 8px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: inline-flex; /* Permite centralizar o conteúdo */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    text-align: center; /* Alinhamento de texto de fallback */
 }
 
 .edit-btn {
     background-color: #ffc107;
     color: #000;
-    margin-right: 10px;
+    margin-right: 10px; /* Espaço entre os botões */
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
 }
 
 .delete-btn {
@@ -900,26 +806,31 @@ img {
     color: #fff;
 }
 
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
 .project-form {
     background-color: var(--card-color);
     padding: 30px;
     border-radius: var(--border-radius);
-    margin: 20px auto;
-    max-width: 700px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin: 20px auto;
 }
 
 .project-form h3 {
-    color: var(--text-color);
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .project-form label {
-    display: block;
-    margin-top: 15px;
-    color: #ccc;
     font-weight: bold;
+    color: var(--text-color);
+    margin-top: 15px;
+    display: block;
 }
 
 .project-form input,
@@ -931,16 +842,16 @@ img {
     background-color: #333;
     color: var(--text-color);
     border-radius: 4px;
-    box-sizing: border-box;
 }
 
 .project-form button {
+    margin-top: 20px;
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 .project-form button[type="submit"] {
@@ -948,8 +859,27 @@ img {
     color: #fff;
 }
 
+.project-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
 .project-form #cancelEditBtn {
     background-color: #6c757d;
     color: #fff;
     margin-left: 10px;
+}
+
+.project-form #cancelEditBtn:hover {
+    background-color: #5a6268;
+}
+
+.form-message {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    display: none; /* Garante que a notificação esteja escondida por padrão */
+    transition: all 0.5s ease-in-out; /* Adiciona uma transição suave */
 }

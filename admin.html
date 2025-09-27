@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.art - Admin</title>
+    <link rel="icon" href="images/Favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <main class="content">
+            <section id="admin" class="page active">
+                <div class="admin-container">
+                    <div class="admin-login-card">
+                        <h2>Admin Login</h2>
+                        <form id="adminLoginForm">
+                            <input type="password" id="adminPassword" placeholder="Enter password" required>
+                            <button type="submit">Login</button>
+                        </form>
+                    </div>
+
+                    <div class="admin-content" style="display: none;">
+                        <h2>Gerenciar Projetos</h2>
+                        <button id="addProjectBtn">Adicionar Novo Projeto</button>
+                        <div id="projectList" class="project-list">
+                        </div>
+
+                        <div id="projectForm" class="project-form" style="display: none;">
+                            <h3>Editor de Projeto</h3>
+                            <form id="projectEditorForm">
+                                <input type="hidden" id="projectId">
+                                <label for="projectTitle">Título:</label>
+                                <input type="text" id="projectTitle" required>
+                                <label for="projectShortDesc">Descrição Curta:</label>
+                                <textarea id="projectShortDesc" required></textarea>
+                                <label for="projectFullDesc">Descrição Completa:</label>
+                                <textarea id="projectFullDesc" rows="5"></textarea>
+                                <label for="projectImage">URL da Imagem de Capa:</label>
+                                <input type="url" id="projectImage">
+                                <label for="projectScreenshots">URLs de Screenshots (separar por vírgula):</label>
+                                <input type="text" id="projectScreenshots">
+                                <label for="projectVideo">URL do Vídeo (Embed):</label>
+                                <input type="url" id="projectVideo">
+                                <label for="projectTags">Tags (separar por vírgula):</label>
+                                <input type="text" id="projectTags">
+                                <label for="projectDate">Data (ex: Agosto 2023):</label>
+                                <input type="text" id="projectDate">
+                                <label for="projectVersion">Versão:</label>
+                                <input type="text" id="projectVersion">
+                                <label for="projectCode">Snippet de Código:</label>
+                                <textarea id="projectCode" rows="5"></textarea>
+                                <label for="projectDownload">Arquivos de Download (URL, Nome, Tamanho; separar por ponto e vírgula):</label>
+                                <textarea id="projectDownload" rows="3"></textarea>
+                                <label for="projectDemo">Link de Demonstração:</label>
+                                <input type="url" id="projectDemo">
+                                <button type="submit">Salvar Projeto</button>
+                                <button type="button" id="cancelEditBtn">Cancelar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/projects.js"></script>
+</body>
+
+</html>

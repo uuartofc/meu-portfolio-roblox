@@ -1,426 +1,390 @@
-// Funcionalidades principais do site
+// --- Lógica Principal do Portfólio e Admin ---
+document.addEventListener('DOMContentLoaded', () => {
 
-document.addEventListener('DOMContentLoaded', function() {
-    // --- Lógica de Navegação entre Páginas ---
-    const navLinks = document.querySelectorAll('.nav-links li');
-    const pages = document.querySelectorAll('.page');
-    
-    function showPage(targetPage) {
-        navLinks.forEach(item => item.classList.remove('active'));
-        pages.forEach(page => page.classList.remove('active'));
-        
-        const selectedLink = document.querySelector(`[data-page="${targetPage}"]`);
-        if (selectedLink) {
-            selectedLink.classList.add('active');
-        }
-        
-        const selectedPage = document.getElementById(targetPage);
-        if (selectedPage) {
-            selectedPage.classList.add('active');
-        }
+    const path = window.location.pathname;
 
-        // Carrega o conteúdo dinâmico
-        if (targetPage === 'projects') {
-            loadProjects();
-        } else if (targetPage === 'admin') {
-            loadAdminProjects();
-        }
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
     }
+    const db = firebase.firestore();
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            const targetPage = this.getAttribute('data-page');
-            showPage(targetPage);
-        });
-    });
+    // Lógica para o painel de administração
+    if (path.includes('admin.html')) {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            sidebar.style.display = 'none';
+        }
 
-    // --- Botão de Voltar ---
-    const backButton = document.querySelector('.back-button');
-    if (backButton) {
-        backButton.addEventListener('click', function() {
-            showPage('projects');
-        });
-    }
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const adminPasswordInput = document.getElementById('adminPassword');
+        const adminContentDiv = document.querySelector('.admin-content');
+        const projectEditorForm = document.getElementById('projectEditorForm');
+        const addProjectBtn = document.getElementById('addProjectBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const projectFormDiv = document.getElementById('projectForm');
+        const projectListDiv = document.getElementById('projectList');
 
-// --- Lógica do formulário de contato ---
-const form = document.querySelector('.contact-form form');
-const formURL = "https://formspree.io/f/movkjepb"; // O URL do seu formulário
-
-if (form) {
-    form.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Impede o envio padrão do formulário
-
-        const formData = new FormData(form);
-        
-        try {
-            const response = await fetch(formURL, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+        function loadProjects() {
+            projectListDiv.innerHTML = '';
+            db.collection('projects').orderBy('date', 'desc').get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    const project = doc.data();
+                    const projectItem = document.createElement('div');
+                    projectItem.classList.add('project-item');
+                    projectItem.innerHTML = `
+                        <h3>${project.Tittle}</h3>
+                        <p>${project.shortDescription}</p>
+                        <div>
+                            <button class="edit-btn" data-id="${doc.id}">Editar</button>
+                            <button class="delete-btn" data-id="${doc.id}">Excluir</button>
+                        </div>
+                    `;
+                    projectListDiv.appendChild(projectItem);
+                });
+                console.log("Projetos carregados com sucesso!");
+            }).catch(error => {
+                console.error("Erro ao carregar projetos:", error);
+                alert("Não foi possível carregar os projetos. Verifique sua conexão e as regras do Firebase.");
             });
-
-            // Adicionado para diagnóstico: registra a resposta completa no console
-            console.log("Resposta do Formspree:", response);
-
-            if (response.ok) {
-                // Se o envio foi um sucesso, mostra o popup
-                alert('Mensagem enviada com sucesso! Obrigado pelo contato.');
-                form.reset(); // Limpa os campos do formulário
-            } else {
-                // Se houver um erro, avisa o usuário
-                alert('Ops! Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.');
-            }
-        } catch (error) {
-            // Adicionado para diagnóstico: captura erros de rede
-            console.error('Erro de requisição:', error);
-            alert('Ops! Ocorreu um erro de conexão. Verifique seu console.');
         }
-    });
-}
-// --- Fim da lógica do formulário ---
 
-    // --- Overlay de Vídeo ---
-    const videoOverlay = document.querySelector('.video-overlay');
-    if (videoOverlay) {
-        videoOverlay.addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
-                const iframeContainer = this.querySelector('.video-container');
-                iframeContainer.innerHTML = '';
-            }
-        });
-    }
-    
-    // --- Overlay de Imagem ---
-    const imageOverlay = document.querySelector('.image-overlay');
-    if (imageOverlay) {
-        imageOverlay.addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
-            }
-        });
-    }
-
-    // --- Lógica do Painel de Administração ---
-    const adminLoginForm = document.getElementById('adminLoginForm');
-    const adminPasswordInput = document.getElementById('adminPassword');
-    const adminLoginCard = document.querySelector('.admin-login-card');
-    const adminContent = document.querySelector('.admin-content');
-    const addProjectBtn = document.getElementById('addProjectBtn');
-    const projectListDiv = document.getElementById('projectList');
-    const projectFormDiv = document.getElementById('projectForm');
-    const projectEditorForm = document.getElementById('projectEditorForm');
-    const projectIdInput = document.getElementById('projectId');
-    const projectTittleInput = document.getElementById('projectTitle');
-    const projectShortDescInput = document.getElementById('projectShortDesc');
-    const projectFullDescInput = document.getElementById('projectFullDesc');
-    const projectImageInput = document.getElementById('projectImage');
-    const projectScreenshotsInput = document.getElementById('projectScreenshots');
-    const projectVideoInput = document.getElementById('projectVideo');
-    const projectTagsInput = document.getElementById('projectTags');
-    const projectDateInput = document.getElementById('projectDate');
-    const projectVersionInput = document.getElementById('projectVersion');
-    const projectCodeInput = document.getElementById('projectCode');
-    const projectDownloadInput = document.getElementById('projectDownload');
-    const projectDemoInput = document.getElementById('projectDemo');
-    const cancelEditBtn = document.getElementById('cancelEditBtn');
-
-    // Senha de Admin - SUBSTITUA ESTA SENHA
-    const ADMIN_PASSWORD = "Admin";
-
-    if (adminLoginForm) {
+        // Evento de submit do formulário de login
         adminLoginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (adminPasswordInput.value === ADMIN_PASSWORD) {
-                adminLoginCard.style.display = 'none';
-                adminContent.style.display = 'block';
-                loadAdminProjects();
-            } else {
-                alert('Senha incorreta!');
-            }
-        });
-    }
+            const password = adminPasswordInput.value;
 
-    if (addProjectBtn) {
+            // Busca a senha no Firestore
+            db.collection('admin').doc('credentials').get().then(doc => {
+                if (doc.exists) {
+                    const adminData = doc.data();
+                    const correctPassword = adminData.password;
+
+                    if (password === correctPassword) {
+                        console.log("Acesso de administrador concedido.");
+                        document.querySelector('.admin-login-card').style.display = 'none';
+                        adminContentDiv.style.display = 'block';
+                        loadProjects();
+                    } else {
+                        alert('Senha incorreta!');
+                    }
+                } else {
+                    alert('Erro: Documento de credenciais não encontrado no banco de dados!');
+                }
+            }).catch(error => {
+                console.error("Erro ao buscar senha:", error);
+                alert("Erro ao tentar fazer login. Verifique sua conexão e as regras do Firebase.");
+            });
+        });
+
         addProjectBtn.addEventListener('click', () => {
             projectEditorForm.reset();
-            projectIdInput.value = '';
+            document.getElementById('projectId').value = '';
             projectFormDiv.style.display = 'block';
         });
-    }
 
-    if (cancelEditBtn) {
         cancelEditBtn.addEventListener('click', () => {
             projectFormDiv.style.display = 'none';
         });
-    }
 
-    if (projectEditorForm) {
-        projectEditorForm.addEventListener('submit', async (e) => {
+        projectEditorForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const id = document.getElementById('projectId').value;
+
+            const downloadText = document.getElementById('projectDownload').value;
+            const downloads = downloadText.split('\n').filter(line => line.trim() !== '').map(line => {
+                const parts = line.split(';');
+                return {
+                    url: parts[0],
+                    name: parts[1],
+                    size: parts[2]
+                };
+            });
 
             const projectData = {
-                Tittle: projectTittleInput.value,
-                shortDescription: projectShortDescInput.value,
-                fullDescription: projectFullDescInput.value,
-                image: projectImageInput.value,
-                screenshots: projectScreenshotsInput.value.split(',').map(s => s.trim()).filter(s => s), // Filtra strings vazias
+                Tittle: document.getElementById('projectTitle').value,
+                shortDescription: document.getElementById('projectShortDesc').value,
+                fullDescription: document.getElementById('projectFullDesc').value,
+                image: document.getElementById('projectImage').value,
+                screenshots: document.getElementById('projectScreenshots').value.split(',').map(s => s.trim()).filter(s => s),
                 video: {
-                    url: projectVideoInput.value || null,
-                    Tittle: ''
+                    Tittle: "",
+                    url: document.getElementById('projectVideo').value || null
                 },
-                tags: projectTagsInput.value.split(',').map(s => s.trim()).filter(s => s), // Filtra strings vazias
-                date: projectDateInput.value,
-                version: projectVersionInput.value,
-                codeSnippet: projectCodeInput.value,
-                // Lida com múltiplos downloads (URL, nome, tamanho)
-                downloadFiles: projectDownloadInput.value.split(';').map(item => {
-                    const [url, name, size] = item.split(',').map(s => s.trim());
-                    return { url, name, size };
-                }).filter(file => file.url || file.name || file.size), // Filtra objetos vazios
-                demoLink: projectDemoInput.value || null
+                tags: document.getElementById('projectTags').value.split(',').map(t => t.trim()).filter(t => t),
+                date: document.getElementById('projectDate').value,
+                version: document.getElementById('projectVersion').value,
+                codeSnippet: document.getElementById('projectCode').value,
+                downloadFiles: downloads,
+                demoLink: document.getElementById('projectDemo').value || null
             };
 
-            const projectId = projectIdInput.value;
-            try {
-                if (projectId) {
-                    await db.collection('projects').doc(projectId).update(projectData);
+            if (id) {
+                db.collection('projects').doc(id).update(projectData).then(() => {
                     alert('Projeto atualizado com sucesso!');
-                } else {
-                    await db.collection('projects').add(projectData);
-                    alert('Projeto adicionado com sucesso!');
-                }
-                projectFormDiv.style.display = 'none';
-                loadAdminProjects();
-            } catch (error) {
-                console.error("Erro ao salvar o projeto: ", error);
-                alert('Erro ao salvar o projeto. Verifique o console.');
-            }
-        });
-    }
-
-    async function loadAdminProjects() {
-        if (!projectListDiv) return;
-        projectListDiv.innerHTML = '<h4>Carregando projetos...</h4>';
-        const snapshot = await db.collection('projects').get();
-        projectListDiv.innerHTML = '';
-        snapshot.forEach(doc => {
-            const project = doc.data();
-            const projectItem = document.createElement('div');
-            projectItem.className = 'admin-project-item';
-            projectItem.innerHTML = `
-                <h4>${project.Tittle}</h4>
-                <div class="admin-actions">
-                    <button class="edit-btn" data-id="${doc.id}">Editar</button>
-                    <button class="delete-btn" data-id="${doc.id}">Excluir</button>
-                </div>
-            `;
-            projectListDiv.appendChild(projectItem);
-
-            projectItem.querySelector('.edit-btn').addEventListener('click', () => {
-                editProject(doc.id, project);
-            });
-            projectItem.querySelector('.delete-btn').addEventListener('click', () => {
-                deleteProject(doc.id);
-            });
-        });
-    }
-
-    function editProject(id, project) {
-        projectIdInput.value = id;
-        projectTittleInput.value = project.Tittle;
-        projectShortDescInput.value = project.shortDescription;
-        projectFullDescInput.value = project.fullDescription;
-        projectImageInput.value = project.image;
-        projectScreenshotsInput.value = (project.screenshots || []).join(', ');
-        projectVideoInput.value = (project.video && project.video.url) || '';
-        projectTagsInput.value = (project.tags || []).join(', ');
-        projectDateInput.value = project.date;
-        projectVersionInput.value = project.version;
-        projectCodeInput.value = project.codeSnippet;
-        
-        const downloads = (project.downloadFiles || []).map(file => `${file.url || ''}, ${file.name || ''}, ${file.size || ''}`).join('; ');
-        projectDownloadInput.value = downloads;
-
-        projectDemoInput.value = project.demoLink || '';
-
-        projectFormDiv.style.display = 'block';
-    }
-
-    async function deleteProject(id) {
-        if (confirm('Tem certeza que deseja excluir este projeto?')) {
-            try {
-                await db.collection('projects').doc(id).delete();
-                alert('Projeto excluído com sucesso!');
-                loadAdminProjects();
-            } catch (error) {
-                console.error("Erro ao excluir o projeto: ", error);
-                alert('Erro ao excluir o projeto. Verifique o console.');
-            }
-        }
-    }
-
-    // --- Função de Carregar Projetos (Página Principal) ---
-    async function loadProjects() {
-        const projectsGrid = document.querySelector('.projects-grid');
-        
-        if (!projectsGrid) return;
-        
-        projectsGrid.innerHTML = '<p style="text-align:center;">Carregando projetos...</p>';
-        
-        try {
-            const projectsRef = db.collection('projects');
-            const snapshot = await projectsRef.get();
-            const projects = [];
-            snapshot.forEach(doc => {
-                projects.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            
-            projectsGrid.innerHTML = '';
-            
-            if (projects.length > 0) {
-                projects.forEach(project => {
-                    const projectCard = document.createElement('div');
-                    projectCard.className = 'project-card';
-                    
-                    projectCard.innerHTML = `
-                        <div class="project-image">
-                            <img src="${project.image}" alt="${project.Tittle}">
-                        </div>
-                        <div class="project-info">
-                            <h3>${project.Tittle}</h3>
-                            <p>${project.shortDescription}</p>
-                            <div class="project-tags">
-                                ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
-                            </div>
-                        </div>
-                    `;
-                    
-                    projectCard.addEventListener('click', function() {
-                        showProjectDetails(project);
-                    });
-                    
-                    projectsGrid.appendChild(projectCard);
+                    loadProjects();
+                    projectFormDiv.style.display = 'none';
+                }).catch(error => {
+                    console.error("Erro ao atualizar projeto: ", error);
                 });
             } else {
-                projectsGrid.innerHTML = '<p style="text-align:center;">Nenhum projeto encontrado.</p>';
+                db.collection('projects').add(projectData).then(() => {
+                    alert('Novo projeto adicionado com sucesso!');
+                    loadProjects();
+                    projectFormDiv.style.display = 'none';
+                }).catch(error => {
+                    console.error("Erro ao adicionar projeto: ", error);
+                });
             }
-        } catch (error) {
-            console.error("Erro ao carregar os projetos: ", error);
-            projectsGrid.innerHTML = '<p style="text-align:center;">Erro ao carregar projetos. Verifique o console para mais detalhes.</p>';
+        });
+
+        projectListDiv.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            if (e.target.classList.contains('edit-btn')) {
+                db.collection('projects').doc(id).get().then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('projectId').value = doc.id;
+                        document.getElementById('projectTitle').value = data.Tittle;
+                        document.getElementById('projectShortDesc').value = data.shortDescription;
+                        document.getElementById('projectFullDesc').value = data.fullDescription;
+                        document.getElementById('projectImage').value = data.image;
+                        document.getElementById('projectScreenshots').value = data.screenshots.join(', ');
+                        document.getElementById('projectVideo').value = data.video ? data.video.url : '';
+                        document.getElementById('projectTags').value = data.tags.join(', ');
+                        document.getElementById('projectDate').value = data.date;
+                        document.getElementById('projectVersion').value = data.version;
+                        document.getElementById('projectCode').value = data.codeSnippet;
+
+                        let downloadText = '';
+                        if (data.downloadFiles) {
+                            downloadText = data.downloadFiles.map(d => `${d.url};${d.name};${d.size}`).join('\n');
+                        }
+                        document.getElementById('projectDownload').value = downloadText;
+
+                        document.getElementById('projectDemo').value = data.demoLink || '';
+
+                        projectFormDiv.style.display = 'block';
+                    }
+                });
+            } else if (e.target.classList.contains('delete-btn')) {
+                if (confirm('Tem certeza que deseja excluir este projeto?')) {
+                    db.collection('projects').doc(id).delete().then(() => {
+                        alert('Projeto excluído com sucesso!');
+                        loadProjects();
+                    }).catch(error => {
+                        console.error("Erro ao excluir projeto: ", error);
+                    });
+                }
+            }
+        });
+    } else {
+        // Lógica para a página principal (index.html)
+        const navLinks = document.querySelectorAll('.nav-links li');
+        const pages = document.querySelectorAll('.page');
+        const projectsGrid = document.querySelector('.projects-grid');
+        const projectDetailsSection = document.getElementById('project-details');
+        const imageOverlay = document.querySelector('.image-overlay');
+        const videoOverlay = document.querySelector('.video-overlay');
+
+        function displayProjects(projects) {
+            projectsGrid.innerHTML = '';
+            projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.classList.add('project-card');
+                projectCard.innerHTML = `
+                    <div class="project-image-container"> <img src="${project.image}" alt="${project.Tittle}">
+                    </div>
+                    <div class="project-info">
+                        <h3>${project.Tittle}</h3>
+                        <p>${project.shortDescription}</p>
+                        <div class="project-tags">${project.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
+                    </div>
+                `;
+                projectCard.addEventListener('click', () => showProjectDetails(project));
+                projectsGrid.appendChild(projectCard);
+            });
         }
-    }
 
-    // --- Função de Mostrar Detalhes do Projeto ---
-    function showProjectDetails(project) {
-        const projectContent = document.querySelector('.project-content');
-        const projectDetailsPage = document.getElementById('project-details');
-        const projectsPage = document.getElementById('projects');
-
-        if (projectContent && projectDetailsPage && projectsPage) {
-            projectContent.innerHTML = `
-                <div class="project-header">
-                    <h1>${project.Tittle}</h1>
-                    <div class="project-meta">
-                        <span><i class="fas fa-calendar"></i> ${project.date}</span>
-                        <span><i class="fas fa-code-branch"></i> ${project.version}</span>
+        function showProjectDetails(project) {
+            projectDetailsSection.innerHTML = `
+                <div class="back-button"><i class="fas fa-arrow-left"></i> Voltar</div>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h2>${project.Tittle}</h2>
+                        <p class="project-date">${project.date} | Versão: ${project.version}</p>
                     </div>
-                </div>
-                
-                <div class="project-description">
-                    ${project.fullDescription}
-                </div>
-
-                <div class="project-media">
-                    <h3>Miniaturas</h3>
-                    <div class="project-screenshots">
-                        ${(project.screenshots || []).map(screenshot => `
-                            <img src="${screenshot}" alt="Screenshot do projeto">
-                        `).join('')}
+                    <div class="project-description">
+                        <p>${project.fullDescription}</p>
                     </div>
-                </div>
-                
-                <div class="video-button-container">
-                    ${project.video && project.video.url ? `
-                        <button class="video-button" data-video-url="${project.video.url}">
-                            <i class="fas fa-play-circle"></i> Ver Vídeo
-                        </button>
-                    ` : `
-                        <p class="no-video-message">Sem vídeo demonstrativo, ou em produção.</p>
-                    `}
-                </div>
-
-                <div class="code-section">
-                    <h3>Código Principal</h3>
-                    <div class="code-block">
-                        <pre><code>${project.codeSnippet}</code></pre>
-                    </div>
-                </div>
-                
-                ${project.downloadFiles && project.downloadFiles.length > 0 ? `
-                    <div class="download-section">
-                        <h3>Arquivos para Download</h3>
-                        <div class="download-files">
-                            ${project.downloadFiles.map(file => `
-                                <a href="${file.url}" download class="download-item">
-                                    <i class="fas fa-download"></i>
-                                    <span class="file-name">${file.name}</span>
-                                    <span class="file-size">${file.size}</span>
-                                </a>
-                            `).join('')}
+                    
+                    ${project.screenshots && project.screenshots.length > 0 ? `
+                        <div class="project-screenshots-section">
+                            <h3>Miniaturas</h3>
+                            <div class="screenshot-grid">
+                                ${project.screenshots.map(s => `<img src="${s}" alt="Screenshot" class="screenshot">`).join('')}
+                            </div>
                         </div>
-                    </div>
-                ` : ''}
-                
-                ${project.demoLink ? `
-                    <div class="demo-link">
-                        <a href="${project.demoLink}" target="_blank" class="submit-btn">
-                            <i class="fas fa-external-link-alt"></i> Ver Demonstração
-                        </a>
-                    </div>
-                ` : ''}
-            `;
-            
-            const projectScreenshots = document.querySelector('.project-screenshots');
-            const overlayImage = document.querySelector('.image-overlay img');
+                    ` : ''}
 
-            if (projectScreenshots) {
-                projectScreenshots.addEventListener('click', function(e) {
-                    if (e.target.tagName === 'IMG' && overlayImage) {
-                        overlayImage.src = e.target.src;
-                        imageOverlay.classList.add('active');
+                    ${project.video && project.video.url ? `
+                        <div class="video-button-container">
+                            <a href="#" class="video-button" data-video-url="${project.video.url}">
+                                <i class="fas fa-video"></i> Ver Vídeo
+                            </a>
+                        </div>
+                    ` : `<div class="no-video-message">Nenhum vídeo disponível.</div>`}
+                    
+                    ${project.codeSnippet ? `
+                        <div class="code-section">
+                            <h3>Código Principal</h3>
+                            <pre><code>${project.codeSnippet}</code></pre>
+                        </div>
+                    ` : ''}
+
+                    ${project.downloadFiles && project.downloadFiles.length > 0 ? `
+                        <div class="download-section">
+                            <h3>Arquivos para Download</h3>
+                            <div class="download-files">
+                                ${project.downloadFiles.map(d => `<a href="${d.url}" target="_blank" class="download-item">
+                                    <i class="fas fa-download"></i>
+                                    <span class="file-name">${d.name}</span>
+                                    <span class="file-size">${d.size}</span>
+                                </a>`).join('')}
+                            </div>
+                        </div>` : ''}
+                    
+                    ${project.demoLink ? `<a href="${project.demoLink}" target="_blank" class="project-link-btn">Ver Demo</a>` : ''}
+                </div>
+            `;
+
+            document.querySelector('.back-button').addEventListener('click', () => {
+                projectDetailsSection.style.display = 'none';
+                document.getElementById('projects').style.display = 'block';
+            });
+
+            document.getElementById('projects').style.display = 'none';
+            projectDetailsSection.style.display = 'block';
+
+            const videoButton = document.querySelector('.video-button');
+            if (videoButton) {
+                videoButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const videoUrl = videoButton.dataset.videoUrl;
+                    if (videoUrl) {
+                        const iframe = videoOverlay.querySelector('.video-player');
+                        if (iframe) {
+                            iframe.src = videoUrl;
+                            videoOverlay.style.display = 'flex';
+                        } else {
+                            console.error('Erro: Não foi possível encontrar a tag <iframe> dentro do overlay de vídeo.');
+                        }
                     }
                 });
             }
 
-            const videoButton = document.querySelector('.video-button');
-            if (videoButton) {
-                videoButton.addEventListener('click', function() {
-                    const iframeContainer = videoOverlay.querySelector('.video-container');
-                    const videoUrl = this.getAttribute('data-video-url');
-                    
-                    const iframe = document.createElement('iframe');
-                    iframe.src = videoUrl;
-                    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-                    iframe.setAttribute('allowfullscreen', '');
-                    
-                    iframeContainer.innerHTML = '';
-                    iframeContainer.appendChild(iframe);
-                    
-                    videoOverlay.classList.add('active');
+            const screenshotImages = document.querySelectorAll('.screenshot-grid .screenshot');
+            screenshotImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    imageOverlay.querySelector('img').src = img.src;
+                    imageOverlay.style.display = 'flex';
                 });
-            }
+            });
+        }
 
-            projectsPage.classList.remove('active');
-            projectDetailsPage.classList.add('active');
+        if (imageOverlay) {
+            imageOverlay.addEventListener('click', (e) => {
+                if (e.target === imageOverlay) {
+                    imageOverlay.style.display = 'none';
+                }
+            });
+        }
+
+        if (videoOverlay) {
+            videoOverlay.addEventListener('click', (e) => {
+                if (e.target === videoOverlay) {
+                    videoOverlay.style.display = 'none';
+                    videoOverlay.querySelector('.video-player').src = '';
+                }
+            });
+        }
+
+        let allProjects = [];
+        async function fetchProjects() {
+            const projectsCol = db.collection('projects');
+            const snapshot = await projectsCol.get();
+            allProjects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayProjects(allProjects);
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                link.classList.add('active');
+                const targetPage = link.getAttribute('data-page');
+                pages.forEach(page => {
+                    page.style.display = 'none';
+                });
+                if (targetPage === 'projects') {
+                    projectDetailsSection.style.display = 'none';
+                    document.getElementById('projects').style.display = 'block';
+                } else {
+                    document.getElementById(targetPage).style.display = 'block';
+                }
+            });
+        });
+
+        document.getElementById('home').style.display = 'block';
+        fetchProjects();
+
+        // --- Lógica de Envio de E-mail (NOVA SEÇÃO) ---
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.createElement('div');
+        formMessage.classList.add('form-message');
+        formMessage.style.display = 'none';
+
+        if (contactForm) {
+            contactForm.parentNode.insertBefore(formMessage, contactForm.nextSibling);
+
+            contactForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const formspreeEndpoint = 'https://formspree.io/f/movkjepb'; 
+
+                const formData = new FormData(contactForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                try {
+                    const response = await fetch(formspreeEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    });
+
+                    if (response.ok) {
+                        formMessage.textContent = 'Obrigado! Sua mensagem foi enviada com sucesso.';
+                        formMessage.style.backgroundColor = '#4CAF50';
+                        formMessage.style.display = 'block';
+                        contactForm.reset();
+                    } else {
+                        formMessage.textContent = 'Ocorreu um erro. Por favor, tente novamente mais tarde.';
+                        formMessage.style.backgroundColor = '#f44336';
+                        formMessage.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Erro de envio:', error);
+                    formMessage.textContent = 'Erro de rede. Por favor, verifique sua conexão.';
+                    formMessage.style.backgroundColor = '#f44336';
+                    formMessage.style.display = 'block';
+                }
+
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 5000);
+            });
         }
     }
-
-    // Carrega a página inicial ao carregar o site
-    showPage('home');
 });
