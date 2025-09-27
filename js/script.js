@@ -16,9 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Adicionar classe ativa ao link e página selecionados
             this.classList.add('active');
             document.getElementById(targetPage).classList.add('active');
-
+            
+            // Se a página for "Projetos" ou "Admin", carregar os dados
             if (targetPage === 'projects') {
                 loadProjects();
+            } else if (targetPage === 'admin') {
+                // A lógica de login e carregamento do admin está em admin.js
             }
         });
     });
@@ -32,8 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Carregar projetos dinamicamente
-    loadProjects();
+    // Carregar projetos dinamicamente na primeira vez que a página é carregada
+    if (document.getElementById('projects').classList.contains('active')) {
+        loadProjects();
+    }
     
     // Evento para fechar o overlay de imagens ao clicar nele
     const imageOverlay = document.querySelector('.image-overlay');
@@ -41,20 +46,41 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.remove('active');
     });
 
-    // Evento para fechar o overlay de vídeo ao clicar nele
+    // Evento para fechar o overlay de vídeos ao clicar nele
     const videoOverlay = document.querySelector('.video-overlay');
     videoOverlay.addEventListener('click', function(e) {
         // Verifica se o clique foi diretamente no overlay e não no iframe
         if (e.target === this) {
             this.classList.remove('active');
-            // Interrompe o vídeo quando o overlay é fechado
-            const iframe = this.querySelector('iframe');
-            if (iframe) {
-                iframe.src = '';
-            }
+            // Pausar o vídeo quando o overlay for fechado para evitar que continue tocando
+            const iframeContainer = this.querySelector('.video-container');
+            iframeContainer.innerHTML = ''; // Remove o iframe do DOM
         }
     });
 
+    // --- Lógica do formulário de contato (mantida) ---
+    const form = document.querySelector('.contact-form form');
+    const formURL = "https://formspree.io/f/mqayeznj"; // O URL do seu formulário
+
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        const formData = new FormData(form);
+        const response = await fetch(formURL, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert('Mensagem enviada com sucesso! Obrigado pelo contato.');
+            form.reset(); // Limpa os campos do formulário
+        } else {
+            alert('Ops! Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.');
+        }
+    });
 });
 
 // Função para carregar os projetos na página
@@ -62,10 +88,11 @@ async function loadProjects() {
     const projectsGrid = document.querySelector('.projects-grid');
     
     if (projectsGrid) {
-        projectsGrid.innerHTML = '';
+        projectsGrid.innerHTML = '<p>Carregando projetos...</p>';
         
         try {
-            const snapshot = await db.collection('projects').get();
+            const projectsRef = db.collection('projects');
+            const snapshot = await projectsRef.get();
             const projects = [];
             snapshot.forEach(doc => {
                 projects.push({
@@ -73,6 +100,8 @@ async function loadProjects() {
                     ...doc.data()
                 });
             });
+            
+            projectsGrid.innerHTML = ''; // Limpa a mensagem de carregamento
             
             if (projects.length > 0) {
                 projects.forEach(project => {
@@ -103,88 +132,92 @@ async function loadProjects() {
             }
         } catch (error) {
             console.error("Erro ao carregar os projetos: ", error);
-            projectsGrid.innerHTML = '<p>Erro ao carregar os projetos. Por favor, verifique a sua conexão e a configuração do Firebase.</p>';
+            projectsGrid.innerHTML = '<p>Erro ao carregar os projetos. Verifique a sua conexão com o Firebase e a configuração do banco de dados.</p>';
         }
     }
 }
 
-// Função para mostrar os detalhes do projeto
+// Função para mostrar detalhes do projeto
 function showProjectDetails(project) {
-    const projectsPage = document.getElementById('projects');
-    const projectDetailsPage = document.getElementById('project-details');
     const projectContent = document.querySelector('.project-content');
-    
-    if (projectContent) {
-        // Limpa o conteúdo anterior
-        projectContent.innerHTML = '';
-        
-        const detailsHtml = `
-            <h2>${project.title}</h2>
-            <p class="project-version">Versão: ${project.version} | Data: ${project.date}</p>
-            <div class="project-tags">
-                ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
-            </div>
-            
-            <div class="project-full-description">
-                <p>${project.fullDescription}</p>
-            </div>
-            
-            <div class="project-images">
-                <img src="${project.image}" alt="Capa do Projeto">
-                ${project.screenshots.map(src => `<img src="${src}" alt="Screenshot">`).join('')}
-            </div>
-            
-            ${project.video && project.video.url ? `
-            <div class="project-video">
-                <button class="video-button" data-video-url="${project.video.url}">Assistir ao Vídeo</button>
-            </div>
-            ` : ''}
+    const projectDetailsPage = document.getElementById('project-details');
+    const projectsPage = document.getElementById('projects');
 
-            ${project.codeSnippet ? `
-            <div class="project-code">
-                <h3>Código de Exemplo</h3>
-                <pre><code>${project.codeSnippet}</code></pre>
+    if (projectContent && projectDetailsPage && projectsPage) {
+        projectContent.innerHTML = `
+            <div class="project-header">
+                <h1>${project.title}</h1>
+                <div class="project-meta">
+                    <span><i class="fas fa-calendar"></i> ${project.date}</span>
+                    <span><i class="fas fa-code-branch"></i> ${project.version}</span>
+                </div>
             </div>
-            ` : ''}
+            
+            <div class="project-description">
+                ${project.fullDescription}
+            </div>
 
-            ${project.downloadFiles && project.downloadFiles.length > 0 ? `
-            <div class="project-downloads">
-                <h3>Downloads</h3>
-                <ul>
-                    ${project.downloadFiles.map(file => `
-                        <li><a href="${file.url}" download>${file.name}</a> (${file.size})</li>
+            <div class="project-media">
+                <h3>Miniaturas</h3>
+                <div class="project-screenshots">
+                    ${project.screenshots.map(screenshot => `
+                        <img src="${screenshot}" alt="Screenshot do projeto">
                     `).join('')}
-                </ul>
+                </div>
             </div>
-            ` : ''}
+            
+            <div class="video-button-container">
+                ${project.video && project.video.url ? `
+                    <button class="video-button" data-video-url="${project.video.url}">
+                        <i class="fas fa-play-circle"></i> Ver Vídeo
+                    </button>
+                ` : `
+                    <p class="no-video-message">Sem vídeo demonstrativo, ou em produção.</p>
+                `}
+            </div>
 
-            ${project.demoLink ? `
-            <div class="project-demo-link">
-                <a href="${project.demoLink}" target="_blank">Ver Demonstração</a>
+            <div class="code-section">
+                <h3>Código Principal</h3>
+                <div class="code-block">
+                    <pre><code>${project.codeSnippet}</code></pre>
+                </div>
             </div>
+            
+            ${project.downloadFiles && project.downloadFiles.length > 0 ? `
+                <div class="download-section">
+                    <h3>Arquivos para Download</h3>
+                    <div class="download-files">
+                        ${project.downloadFiles.map(file => `
+                            <a href="${file.url}" download class="download-item">
+                                <i class="fas fa-download"></i>
+                                <span class="file-name">${file.name}</span>
+                                <span class="file-size">${file.size}</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            ${project.demoLink ? `
+                <div class="demo-link">
+                    <a href="${project.demoLink}" target="_blank" class="submit-btn">
+                        <i class="fas fa-external-link-alt"></i> Ver Demonstração
+                    </a>
+                </div>
             ` : ''}
         `;
         
-        projectContent.innerHTML = detailsHtml;
-
-        // Evento para fechar o overlay de imagens ao clicar nele
+        const projectScreenshots = document.querySelector('.project-screenshots');
         const imageOverlay = document.querySelector('.image-overlay');
-        imageOverlay.addEventListener('click', function(e) {
-            if (e.target === imageOverlay) {
-                imageOverlay.classList.remove('active');
+        const overlayImage = imageOverlay.querySelector('img');
+
+        projectScreenshots.addEventListener('click', function(e) {
+            if (e.target.tagName === 'IMG') {
+                overlayImage.src = e.target.src;
+                imageOverlay.classList.add('active');
             }
         });
-        
-        // Adicionar o evento de clique nas imagens para abrir o overlay
-        projectContent.querySelectorAll('.project-images img').forEach(img => {
-            img.addEventListener('click', function() {
-                const overlayImage = document.querySelector('.image-overlay img');
-                overlayImage.src = this.src;
-                imageOverlay.classList.add('active');
-            });
-        });
-        
-        // Adicionar o evento de clique no botão de vídeo
+
         const videoButton = document.querySelector('.video-button');
         if (videoButton) {
             videoButton.addEventListener('click', function() {
@@ -192,13 +225,11 @@ function showProjectDetails(project) {
                 const iframeContainer = videoOverlay.querySelector('.video-container');
                 const videoUrl = this.getAttribute('data-video-url');
                 
-                // Cria o iframe dinamicamente
                 const iframe = document.createElement('iframe');
                 iframe.src = videoUrl;
                 iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
                 iframe.setAttribute('allowfullscreen', '');
                 
-                // Limpa o container e insere o novo iframe
                 iframeContainer.innerHTML = '';
                 iframeContainer.appendChild(iframe);
                 
@@ -206,7 +237,6 @@ function showProjectDetails(project) {
             });
         }
 
-        // Mostrar página de detalhes e esconder página de projetos
         projectsPage.classList.remove('active');
         projectDetailsPage.classList.add('active');
     }
