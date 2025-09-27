@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectFormDiv = document.getElementById('projectForm');
     const projectEditorForm = document.getElementById('projectEditorForm');
     const projectIdInput = document.getElementById('projectId');
-    const projectTitleInput = document.getElementById('projectTitle');
+    const projectTittleInput = document.getElementById('projectTitle');
     const projectShortDescInput = document.getElementById('projectShortDesc');
     const projectFullDescInput = document.getElementById('projectFullDesc');
     const projectImageInput = document.getElementById('projectImage');
@@ -57,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             const projectData = {
-                title: projectTitleInput.value,
+                Tittle: projectTittleInput.value,
                 shortDescription: projectShortDescInput.value,
                 fullDescription: projectFullDescInput.value,
                 image: projectImageInput.value,
                 screenshots: projectScreenshotsInput.value.split(',').map(s => s.trim()),
-                video: { url: projectVideoInput.value, title: '' },
+                video: { url: projectVideoInput.value, Tittle: '' },
                 tags: projectTagsInput.value.split(',').map(s => s.trim()),
                 date: projectDateInput.value,
                 version: projectVersionInput.value,
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const projectItem = document.createElement('div');
             projectItem.className = 'admin-project-item';
             projectItem.innerHTML = `
-                <h4>${project.title}</h4>
+                <h4>${project.Tittle}</h4>
                 <div class="admin-actions">
                     <button class="edit-btn" data-id="${doc.id}">Editar</button>
                     <button class="delete-btn" data-id="${doc.id}">Excluir</button>
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function editProject(id, project) {
         projectIdInput.value = id;
-        projectTitleInput.value = project.title;
+        projectTittleInput.value = project.Tittle;
         projectShortDescInput.value = project.shortDescription;
         projectFullDescInput.value = project.fullDescription;
         projectImageInput.value = project.image;
