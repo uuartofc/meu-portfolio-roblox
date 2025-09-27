@@ -786,3 +786,170 @@ img {
     height: 100%;
     border: none; /* Remove a borda padrão do iframe */
 }
+
+/* --- Estilos do Painel de Administração --- */
+.admin-container {
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+.admin-login-card {
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.admin-login-card h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.admin-login-card input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.admin-login-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-login-card button:hover {
+    background-color: #ff5c61;
+}
+
+.admin-content {
+    margin-top: 20px;
+}
+
+.admin-content h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#addProjectBtn {
+    display: block;
+    width: 250px;
+    padding: 10px;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#addProjectBtn:hover {
+    background-color: #0056b3;
+}
+
+.project-list {
+    margin-top: 30px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: var(--border-radius);
+}
+
+.admin-project-item {
+    background-color: #2b2b2b;
+    color: var(--text-color);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #000;
+    margin-right: 10px;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.project-form {
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    margin: 20px auto;
+    max-width: 700px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.project-form h3 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.project-form label {
+    display: block;
+    margin-top: 15px;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.project-form input,
+.project-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: var(--text-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.project-form button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.project-form button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.project-form #cancelEditBtn {
+    background-color: #6c757d;
+    color: #fff;
+    margin-left: 10px;
+}

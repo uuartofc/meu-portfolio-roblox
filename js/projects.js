@@ -3,7 +3,7 @@
 const projects = [
     {
         id: 1,
-        title: "Sistema de Painel de Administrador",
+        Tittle: "Sistema de Painel de Administrador",
         shortDescription: "Um sistema de painel de administrador completo e modular, com funções de moderação e gerenciamento de jogadores, itens e eventos.",
         fullDescription: `Este painel de administrador foi desenvolvido para ser uma ferramenta robusta e intuitiva, garantindo controle total e eficiente sobre a experiência de jogo.
         
@@ -23,7 +23,7 @@ const projects = [
         
         video: {
             url: "https://youtube.com/embed/CraHn5e2boI", 
-            title: "Pequena Demonstração do Painel de Administrador"
+            Tittle: "Pequena Demonstração do Painel de Administrador"
         },
         
         downloadFiles: [

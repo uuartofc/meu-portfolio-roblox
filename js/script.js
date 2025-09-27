@@ -106,10 +106,10 @@ async function loadProjects() {
                     
                     projectCard.innerHTML = `
                         <div class="project-image">
-                            <img src="${project.image}" alt="${project.title}">
+                            <img src="${project.image}" alt="${project.Tittle}">
                         </div>
                         <div class="project-info">
-                            <h3>${project.title}</h3>
+                            <h3>${project.Tittle}</h3>
                             <p>${project.shortDescription}</p>
                             <div class="project-tags">
                                 ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
@@ -142,7 +142,7 @@ function showProjectDetails(project) {
     if (projectContent && projectDetailsPage && projectsPage) {
         projectContent.innerHTML = `
             <div class="project-header">
-                <h1>${project.title}</h1>
+                <h1>${project.Tittle}</h1>
                 <div class="project-meta">
                     <span><i class="fas fa-calendar"></i> ${project.date}</span>
                     <span><i class="fas fa-code-branch"></i> ${project.version}</span>
