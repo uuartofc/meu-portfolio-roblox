@@ -1,0 +1,738 @@
+/* --- Variáveis de Tema -- */
+:root {
+    --primary-color: #FFFFFF;
+    --secondary-color: #ff3c41;
+    --background-color: #2b0909;
+    --sidebar-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ff3c41;
+    --card-color: #000000;
+    --video-border-color: #FFFFFF;
+    --video-background: #ff3c41;
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Barra lateral estilo Roblox (Padrão: Desktop 250px) */
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-color);
+    padding: 20px 0;
+    height: 100vh;
+    position: fixed;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    /* CORREÇÃO: Esconde o conteúdo extra para evitar o "piscamento" */
+    overflow-x: hidden; 
+    transition: width 0.3s ease, left 0.3s ease-in-out;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.logo h2 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links {
+    list-style: none;
+}
+
+.nav-links li {
+    padding: 15px 25px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.nav-links li span {
+    transition: opacity 0.3s ease;
+}
+
+.nav-links li i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    transition: margin-right 0.3s ease;
+}
+
+.nav-links li:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-left: 4px solid var(--primary-color);
+}
+
+.nav-links li.active {
+    background-color: rgba(255, 0, 0, 0.2);
+    border-left: 4px solid var(--primary-color);
+    font-weight: bold;
+}
+
+/* ------------------------------------------------------------------- */
+/* EFEITOS DE RECOLHIMENTO (Desktop) */
+/* ------------------------------------------------------------------- */
+
+.container.collapsed .sidebar {
+    width: 80px;
+}
+
+.container.collapsed .logo h2,
+.container.collapsed .nav-links li span {
+    opacity: 0;
+    width: 0;
+    pointer-events: none;
+}
+
+.container.collapsed .nav-links li {
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.container.collapsed .nav-links li i {
+    margin-right: 0;
+}
+
+/* Ajusta a margem do conteúdo quando a sidebar está recolhida */
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 30px;
+    position: relative;
+    transition: margin-left 0.3s ease;
+}
+
+.container.collapsed .content {
+    margin-left: 80px;
+}
+
+/* Botão de Menu (Padrão: Escondido no Desktop) */
+.menu-toggle {
+    display: none;
+}
+
+/* ------------------------------------------------------------------- */
+/* Conteúdo Principal */
+/* ------------------------------------------------------------------- */
+
+/* Páginas */
+.page {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Página Sobre Mim */
+.about-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.profile {
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 20px;
+    border: 5px solid var(--primary-color);
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.profile .title {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.about-text {
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.about-text h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.skills {
+    margin-top: 30px;
+}
+
+.skills h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tags span {
+    background-color: #ff3c41;
+    color: #FFFFFF;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Página de Projetos */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.project-card {
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.project-card .project-image-container {
+    height: 180px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.project-card .project-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+}
+
+.project-card:hover .project-image-container img {
+    transform: scale(1.05);
+}
+
+.project-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    line-height: 1.3;
+}
+
+.project-info p {
+    color: #cccccc;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.project-tags span {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+/* Página de Detalhes do Projeto */
+.back-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #ff3c41;
+    color: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #cc0000;
+}
+
+.project-content {
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.project-header {
+    margin-bottom: 30px;
+}
+
+.project-header h2 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+}
+
+.project-header .project-date {
+    color: #aaaaaa;
+    margin-bottom: 20px;
+}
+
+.project-description {
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.project-screenshots-section {
+    margin-bottom: 30px;
+}
+
+.project-screenshots-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.screenshot-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    cursor: zoom-in;
+    transition: transform 0.2s;
+}
+
+.screenshot-grid img:hover {
+    transform: scale(1.02);
+}
+
+.video-button-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.video-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: var(--video-background);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.video-button i {
+    margin-right: 10px;
+}
+
+.video-button:hover {
+    background-color: #e50000;
+}
+
+.code-section {
+    margin-bottom: 30px;
+}
+
+.code-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.code-section pre {
+    background-color: #1a1a1a;
+    color: #00ff00;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    border: 1px solid #333;
+}
+
+.download-section {
+    margin-bottom: 30px;
+}
+
+.download-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.download-files {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.download-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #1a1a1a;
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s;
+}
+
+.download-item i {
+    margin-right: 15px;
+    color: var(--accent-color);
+}
+
+.download-item:hover {
+    background-color: #333333;
+}
+
+.file-name {
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.file-size {
+    color: #aaaaaa;
+    font-size: 0.9em;
+}
+
+.project-link-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.project-link-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Contato */
+.contact-container {
+    display: flex;
+    gap: 50px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 250px;
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contact-item i, .contact-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color); /* ESTA LINHA ESTÁ DEIXANDO OS ÍCONES VERMELHOS */
+    margin-right: 15px;
+    width: 30px; 
+    text-align: center;
+}
+
+.contact-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.contact-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-item a:hover {
+    color: var(--secondary-color);
+}
+
+.contact-form {
+    flex: 2;
+    min-width: 300px;
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    border: 1px solid #333;
+    background-color: #1a1a1a;
+    color: var(--text-color);
+    font-size: 1em;
+    resize: vertical;
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.submit-btn:hover {
+    background-color: #cc0000;
+}
+
+.form-message {
+    padding: 15px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Overlays de Imagem e Vídeo */
+.image-overlay, .video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    cursor: pointer;
+}
+
+.image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: var(--border-radius);
+}
+
+.video-container {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ------------------------------------------------------------------- */
+/* MEDIA QUERIES (Responsividade e Barra Retrátil Mobile) */
+/* ------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    
+    /* 1. Visibilidade e Posição do Botão de Menu (Padrão: Escondido no Desktop) */
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 20px;
+        left: 20px; /* Posição inicial */
+        z-index: 150;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--primary-color);
+        background-color: var(--secondary-color);
+        padding: 10px 15px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        transition: left 0.3s ease-in-out, background-color 0.3s;
+    }
+
+    /* 2. Comportamento da Sidebar (Escondida por Padrão) */
+    .sidebar {
+        width: 0px;
+        left: -250px; /* Move a sidebar para fora da tela */
+        box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5); 
+        transition: left 0.3s ease-in-out;
+    }
+
+    /* 3. Comportamento da Sidebar (Aberta/Collapsed no Mobile) */
+    .container.collapsed .sidebar {
+        left: 0; /* Traz a sidebar para a tela */
+    }
+
+    /* 4. CORREÇÃO: Move o botão de menu quando a barra lateral está aberta */
+    .container.collapsed .menu-toggle {
+        /* 250px (largura da sidebar) + 20px (padding do menu-toggle) */
+        left: 100px; 
+        color: var(--secondary-color); 
+        background-color: var(--primary-color);
+    }
+    
+    /* 5. Comportamento do Conteúdo */
+    .content {
+        margin-left: 0; 
+        width: 100%;
+        padding: 20px;
+        padding-top: 80px;
+    }
+
+    .container.collapsed .content {
+        margin-left: 0;
+    }
+
+    /* 6. Ajustes de Layout */
+    .about-container {
+        flex-direction: column;
+    }
+
+    .contact-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .contact-info, .contact-form {
+        min-width: 100%;
+    }
+    
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+}

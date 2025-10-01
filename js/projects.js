@@ -1,4 +1,4 @@
-// Dados dos projetos de scripts Roblox
+// Dados dos projetos
 
 const projects = [
     {

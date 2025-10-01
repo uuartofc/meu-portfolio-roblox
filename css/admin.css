@@ -1,0 +1,259 @@
+/* --- Variáveis de Tema -- */
+:root {
+    --primary-color: #FFFFFF;
+    --secondary-color: #ff3c41;
+    --background-color: #2b0909;
+    --sidebar-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ff3c41;
+    --card-color: #000000;
+    --video-border-color: #FFFFFF;
+    --video-background: #ff3c41;
+    --border-radius: 8px;
+}
+
+html {
+    height: 100%; 
+}
+
+body {
+    /* As regras abaixo são cruciais para o fundo cobrir tudo */
+    height: 100%;
+    min-height: 100vh;
+    
+    /* Seus estilos existentes no body */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+/* --- Estilos do Painel de Administração --- */
+
+.admin-container {
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+.admin-login-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--secondary-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.admin-login-card h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.admin-login-card input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.admin-login-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-login-card button:hover {
+    background-color: #ff5c61;
+}
+
+.admin-content {
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-top: 30px;
+}
+
+#addProjectBtn {
+    display: block;
+    width: 250px;
+    padding: 10px;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#addProjectBtn:hover {
+    background-color: #0056b3;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: var(--border-radius);
+}
+
+.project-item {
+    background-color: #2b2b2b;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.project-item h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.project-item p {
+    margin: 0;
+    color: #999;
+}
+
+.edit-btn, .delete-btn {
+    width: 80px;
+    height: 35px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #000;
+    margin-right: 10px;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.project-form {
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin: 20px auto;
+}
+
+.project-form h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.project-form label {
+    font-weight: bold;
+    color: var(--text-color);
+    margin-top: 15px;
+    display: block;
+}
+
+.project-form input,
+.project-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: var(--text-color);
+    border-radius: 4px;
+}
+
+.project-form button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.project-form button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.project-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.project-form #cancelEditBtn {
+    background-color: #6c757d;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.project-form #cancelEditBtn:hover {
+    background-color: #5a6268;
+}
+
+.form-message {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    display: none;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Garante que o painel de administração ocupe toda a tela no mobile */
+@media (max-width: 768px) {
+    .admin-content {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .admin-login-card {
+        padding: 20px;
+        margin: 30px auto;
+    }
+}

@@ -3,13 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const path = window.location.pathname;
 
+    // Inicializa o Firebase (garantindo que só inicialize uma vez)
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.firestore();
 
-    // Lógica para o painel de administração
+    // ----------------------------------------------------------------
+    // Lógica para o Painel de Administração (admin.html)
+    // ----------------------------------------------------------------
     if (path.includes('admin.html')) {
+        // Seletores e funções do Admin
         const sidebar = document.querySelector('.sidebar');
         if (sidebar) {
             sidebar.style.display = 'none';
@@ -48,12 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Evento de submit do formulário de login
         adminLoginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const password = adminPasswordInput.value;
 
-            // Busca a senha no Firestore
             db.collection('admin').doc('credentials').get().then(doc => {
                 if (doc.exists) {
                     const adminData = doc.data();
@@ -94,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const downloads = downloadText.split('\n').filter(line => line.trim() !== '').map(line => {
                 const parts = line.split(';');
                 return {
-                    url: parts[0],
-                    name: parts[1],
-                    size: parts[2]
+                    url: parts[0] ? parts[0].trim() : '',
+                    name: parts[1] ? parts[1].trim() : 'Arquivo',
+                    size: parts[2] ? parts[2].trim() : ''
                 };
             });
 
@@ -177,8 +179,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+    // ----------------------------------------------------------------
+    // Lógica para a Página Principal (index.html)
+    // ----------------------------------------------------------------
     } else {
-        // Lógica para a página principal (index.html)
+        
+        // Seletores necessários para a lógica da página principal
+        const menuToggle = document.querySelector('.menu-toggle');
+        const container = document.querySelector('.container');
         const navLinks = document.querySelectorAll('.nav-links li');
         const pages = document.querySelectorAll('.page');
         const projectsGrid = document.querySelector('.projects-grid');
@@ -186,6 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageOverlay = document.querySelector('.image-overlay');
         const videoOverlay = document.querySelector('.video-overlay');
 
+        // Lógica de Alternância da Sidebar
+        if (menuToggle && container) {
+            menuToggle.addEventListener('click', () => {
+                // Alterna a classe 'collapsed' no container principal (abre/fecha a sidebar)
+                container.classList.toggle('collapsed');
+            });
+        }
+        
+        // Funções de exibição (mantidas para funcionalidade completa)
         function displayProjects(projects) {
             projectsGrid.innerHTML = '';
             projects.forEach(project => {
@@ -257,10 +275,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            document.querySelector('.back-button').addEventListener('click', () => {
-                projectDetailsSection.style.display = 'none';
-                document.getElementById('projects').style.display = 'block';
-            });
+            const newBackButton = projectDetailsSection.querySelector('.back-button');
+            if (newBackButton) {
+                newBackButton.addEventListener('click', () => {
+                    projectDetailsSection.style.display = 'none';
+                    document.getElementById('projects').style.display = 'block';
+                });
+            }
 
             document.getElementById('projects').style.display = 'none';
             projectDetailsSection.style.display = 'block';
@@ -275,8 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (iframe) {
                             iframe.src = videoUrl;
                             videoOverlay.style.display = 'flex';
-                        } else {
-                            console.error('Erro: Não foi possível encontrar a tag <iframe> dentro do overlay de vídeo.');
                         }
                     }
                 });
@@ -291,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Eventos de Fechamento de Overlays
         if (imageOverlay) {
             imageOverlay.addEventListener('click', (e) => {
                 if (e.target === imageOverlay) {
@@ -301,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (videoOverlay) {
             videoOverlay.addEventListener('click', (e) => {
-                if (e.target === videoOverlay) {
+                if (e.target === videoOverlay) { 
                     videoOverlay.style.display = 'none';
                     videoOverlay.querySelector('.video-player').src = '';
                 }
@@ -316,6 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
             displayProjects(allProjects);
         }
 
+        // ----------------------------------------------------------------
+        // Lógica de Navegação e FECHAMENTO DA SIDEBAR (Conforme solicitado)
+        // ----------------------------------------------------------------
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.forEach(nav => nav.classList.remove('active'));
@@ -330,13 +353,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     document.getElementById(targetPage).style.display = 'block';
                 }
+                
+                // Fecha a sidebar no mobile após a navegação
+                if (window.innerWidth <= 768) {
+                    container.classList.remove('collapsed');
+                }
             });
         });
 
+        // Configuração inicial e carregamento de projetos
         document.getElementById('home').style.display = 'block';
         fetchProjects();
 
-        // --- Lógica de Envio de E-mail (NOVA SEÇÃO) ---
+        // --- Lógica de Envio de E-mail (Formspree) ---
         const contactForm = document.getElementById('contactForm');
         const formMessage = document.createElement('div');
         formMessage.classList.add('form-message');
@@ -348,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contactForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
+                // OBS: VOCÊ PRECISA SUBSTITUIR ESTE ENDPOINT PELO SEU PRÓPRIO FORMULÁRIO FORMSPREE
                 const formspreeEndpoint = 'https://formspree.io/f/movkjepb'; 
 
                 const formData = new FormData(contactForm);
@@ -370,7 +400,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         formMessage.style.display = 'block';
                         contactForm.reset();
                     } else {
-                        formMessage.textContent = 'Ocorreu um erro. Por favor, tente novamente mais tarde.';
+                        const errorData = await response.json();
+                        formMessage.textContent = errorData.error || 'Ocorreu um erro. Por favor, tente novamente mais tarde.';
                         formMessage.style.backgroundColor = '#f44336';
                         formMessage.style.display = 'block';
                     }
